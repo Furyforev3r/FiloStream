@@ -11,10 +11,10 @@
     <nav>
         <ul>
             <li>
-                <a href="/dashboard">Dashboard</a>
+                <a href="/">Dashboard</a>
             </li>
             <li>
-                <a href="/credits">Credits</a>
+                <a href="/">Credits</a>
             </li>
         </ul>
     </nav>
