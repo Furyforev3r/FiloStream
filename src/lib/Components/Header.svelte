@@ -67,4 +67,11 @@
     button:hover {
         background: var(--red-secondary-color);
     }
+
+    @media (max-width: 800px) {
+        nav {
+            display: none;
+        }
+    }
+
 </style>

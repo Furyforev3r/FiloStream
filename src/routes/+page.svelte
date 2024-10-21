@@ -1,8 +1,8 @@
 <script lang="ts">
-    import Icon from "@iconify/svelte"
-    import Header from "$lib/Components/Header.svelte"
-    import Footer from "$lib/Components/Footer.svelte"
-    import FiloStream from "$lib/Assets/FiloStream.png"
+	import Icon from "@iconify/svelte"
+	import Header from "$lib/Components/Header.svelte"
+	import Footer from "$lib/Components/Footer.svelte"
+	import FiloStream from "$lib/Assets/FiloStream.png"
 </script>
 
 <svelte:head>
@@ -15,7 +15,7 @@
 
 	<main>
 		<section>
-        	<img src={FiloStream} width="250px" alt="FiloStream.">
+	   	<img src={FiloStream} width="250px" alt="FiloStream.">
         	<div class="FiloStream">
         		<div>
         			<h1>FiloStream</h1>
@@ -90,12 +90,12 @@
 
     button:hover {
         background: var(--red-secondary-color);
-    }
+	}
 
-    @media (max-width: 800px) {
-    	section {
-    		flex-direction: column;
-    		gap: 1rem;
-    	}
-    }
+	@media (max-width: 800px) {
+		section {
+			flex-direction: column;
+			gap: 1rem;
+		}
+	}
 </style>
