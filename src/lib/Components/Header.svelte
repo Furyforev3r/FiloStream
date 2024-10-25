@@ -1,6 +1,22 @@
 <script lang="ts">
     import FiloStream from "$lib/Assets/FiloStream.png"
     import Icon from "@iconify/svelte"
+    import { goto } from "$app/navigation"
+    import { user } from "$lib/client/hooks/loginState"
+    import { afterUpdate } from "svelte"
+    import axios from "axios"
+
+    let userInfo
+    let userAccount
+
+    $: userInfo = $user
+
+    afterUpdate(async () => {
+        if (userInfo && userInfo != "Loading..." && !userAccount) {
+            const response = await axios.get(`/api/getUser/?uid=${userInfo.uid}`)
+            userAccount = response.data
+        }
+    })
 </script>
 
 <header>
@@ -11,15 +27,20 @@
     <nav>
         <ul>
             <li>
-                <a href="/">Dashboard</a>
+                <a href="/dashboard">Dashboard</a>
             </li>
             <li>
                 <a href="/">Credits</a>
             </li>
         </ul>
     </nav>
-
-    <button on:click={() => alert('To do!')}><Icon icon="material-symbols:login" width="1.2em" height="1.2em"  style="color: white" /> Login</button>
+    {#if userInfo == null}
+        <button on:click={() => goto('/login')}><Icon icon="material-symbols:login" width="1.2em" height="1.2em"  style="color: white" /> Login</button>
+    {:else if userAccount}
+        <a href="profile"><img class="userPhoto" src={userAccount.user.photoURL} alt={userAccount.user.displayName} width="84px"></a>
+    {:else if userInfo == "Loading..."}
+        <div class="loading"></div>
+    {/if}
 </header>
 
 <style>
@@ -66,6 +87,34 @@
 
     button:hover {
         background: var(--red-secondary-color);
+    }
+
+    .userPhoto {
+        cursor: pointer ;
+        object-fit: cover;
+        border-radius: 100%;
+        transition: 0.3s opacity;
+    }
+
+    .userPhoto:hover {
+        opacity: 80%;
+    }
+
+    @keyframes backgroundChange {
+        0% {
+            background-color: var(--foreground);
+        }
+        100% {
+            background-color: var(--button-background);
+        }
+    }
+
+    .loading {
+        width: 84px;
+        height: 84px;
+        background: var(--foreground);
+        border-radius: 999px;
+        animation: backgroundChange 3s infinite;
     }
 
     @media (max-width: 800px) {
