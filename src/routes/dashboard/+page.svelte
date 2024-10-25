@@ -2,7 +2,6 @@
     import Icon from "@iconify/svelte"
     import Header from "$lib/components/Header.svelte"
     import Footer from "$lib/components/Footer.svelte"
-    import FiloStream from "$lib/assets/FiloStream.png"
     import { goto } from "$app/navigation"
     import { user } from "$lib/client/hooks/loginState"
     import { afterUpdate } from "svelte"
