@@ -30,7 +30,7 @@
                 <a href="/dashboard">Dashboard</a>
             </li>
             <li>
-                <a href="/">Credits</a>
+                <a href="/">Help</a>
             </li>
         </ul>
     </nav>
@@ -112,11 +112,12 @@
     }
 
     .loading {
+        cursor: pointer;
         width: 84px;
         height: 84px;
         background: var(--foreground);
         border-radius: 999px;
-        animation: backgroundChange 3s infinite;
+        animation: backgroundChange 3s ease-in-out infinite alternate;
     }
 
     @media (max-width: 800px) {

@@ -61,7 +61,7 @@
                 </div>
                 <div class="divider"></div>
                 <div>
-                    <button on:click={handleGoogleLogin}><img src={GoogleIcon} width="25px" alt="Google"> Login with Google!</button>                    
+                    <button on:click={handleGoogleLogin}><img src={GoogleIcon} width="25px" alt="Google"> Login with Google!</button>
                 </div>
             </div>
         </section>
