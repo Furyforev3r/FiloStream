@@ -1,5 +1,5 @@
 <script lang="ts">
-    import FiloStream from "$lib/Assets/FiloStream.png"
+    import FiloStream from "$lib/assets/FiloStream.png"
     import Icon from "@iconify/svelte"
     import { goto } from "$app/navigation"
     import { user } from "$lib/client/hooks/loginState"
