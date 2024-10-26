@@ -86,6 +86,7 @@
                 toast.success("Video added successfully!", {
                     style: 'background: #222; color: #fff;'
                 })
+                await fetchUserVideos(userInfo.uid)
             } else {
                 formError = response.data.error || "Failed to add video"
             }
