@@ -73,3 +73,19 @@ export async function newVideo(input) {
     return { success: false, error: 'Failed to register video' }
   }
 }
+
+export async function getUserVideos(uid) {
+  try {
+    const userVideosDoc = await db.collection('DefaultVideos').doc(uid).get()
+
+    if (userVideosDoc.exists) {
+      const videos = userVideosDoc.data().videos || []
+      return { success: true, videos }
+    } else {
+      return { success: false, message: 'No videos found for this user.' }
+    }
+  } catch (error) {
+    console.error('Error fetching videos for user:', error)
+    return { success: false, error: 'Failed to fetch videos' }
+  }
+}

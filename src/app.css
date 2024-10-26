@@ -26,6 +26,16 @@ body {
   color: var(--text-color);
 }
 
+::-webkit-scrollbar {
+    width: 15px;
+    background-color: var(--button-background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--button-hover);
+    border-radius: 999px;
+}
+
 * {
   margin: 0;
   padding: 0;
