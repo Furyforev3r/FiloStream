@@ -9,16 +9,37 @@
     import { user } from "$lib/client/hooks/loginState"
     import { afterUpdate } from "svelte"
     import toast, { Toaster } from "svelte-french-toast"
+    import { Splide, SplideSlide } from "@splidejs/svelte-splide"
+    import "@splidejs/svelte-splide/css"
 
     let userInfo
+    let userVideos = []
+    let loadingVideos = true
 
     $: userInfo = $user
 
-    afterUpdate(() => {
+    afterUpdate(async () => {
         if (!userInfo && userInfo != "Loading...") {
             goto("/login")
+        } else if (userInfo && userInfo != "Loading..." && userVideos.length <= 0) {
+            await fetchUserVideos(userInfo.uid)
         }
     })
+
+    async function fetchUserVideos(uid: string) {
+        try {
+            const response = await axios.get(`/api/getUserVideos?uid=${uid}`)
+            if (response.status === 200) {
+                userVideos = response.data.videos || []
+            } else {
+                userVideos = []
+            }
+        } catch (error) {
+            console.error("Error fetching user videos:", error)
+        } finally {
+            loadingVideos = false
+        }
+    }
 
     let toastMenu = false
     let loading = false
@@ -125,6 +146,37 @@
                 <div>
                     <button class="driveButton" on:click={toggleToast}><img src={DriveIcon} width="25px" alt="Google Drive"> Import from Drive</button>
                 </div>
+            </div>
+            <div class="videoSection">
+                <h2>Your Videos</h2>
+                {#if loadingVideos}
+                    <Icon icon="line-md:loading-twotone-loop" width="8rem" height="8rem" style="color: white" />
+                {:else if userVideos.length > 0}
+                    <Splide aria-label="Your Videos" options={{
+                        rewind: true,
+                        perPage: 3,
+                        focus: 'center',
+                        breakpoints: {
+                            800: {
+                                perPage: 1, 
+                            },
+                            1200: {
+                                perPage: 2,
+                            },
+                        },
+                    }}>
+                        {#each userVideos as video}
+                            <SplideSlide>
+                                <li class="video" style={`background-image: url(${video.contentCover});`}>
+                                    <div class="overlay"></div>
+                                    <h1>{video.contentTitle}</h1>
+                                </li>
+                            </SplideSlide>
+                        {/each}
+                    </Splide>
+                {:else}
+                    <p>No videos found. Add some videos to get started!</p>
+                {/if}
             </div>
         </section>
     </main>
@@ -235,6 +287,9 @@
     }
 
     section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
         margin: 3rem;
     }
 
@@ -267,7 +322,53 @@
     .driveButton:hover {
         background: var(--red-secondary-color);
     }
-    
+
+    .videosSection {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        padding: 1rem;
+    }
+
+    .video {
+        cursor: pointer;
+        position: relative;
+        height: 500px;
+        width: 100%; 
+        max-width: 400px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 0.8rem;
+        transition: transform 0.3s ease;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        color: white;
+    }
+
+    .video h1 {
+        margin: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .overlay {
+        position: absolute;
+        border-radius: 0.8rem;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        background-color: rgba(0, 0, 0, 0.5);
+        transition: background-color 0.3s ease;
+    }
+
+    .video:hover .overlay {
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+
     @media (max-width: 800px) {
         .importToast {
             width: 80%;
