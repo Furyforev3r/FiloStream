@@ -27,6 +27,7 @@
 		"firebase": "^11.0.1",
 		"firebase-admin": "^12.7.0",
 		"svelte-french-toast": "^1.2.0",
+		"vidstack": "^1.12.12",
 		"zod": "^3.23.8"
 	}
 }

@@ -168,8 +168,10 @@
                         {#each userVideos as video}
                             <SplideSlide>
                                 <li class="video" style={`background-image: url(${video.contentCover});`}>
-                                    <div class="overlay"></div>
-                                    <h1>{video.contentTitle}</h1>
+                                    <a href={`/player?URL=${video.videoURL}&TITLE=${video.contentTitle}`}>
+                                        <div class="overlay"></div>
+                                        <h1>{video.contentTitle}</h1>     
+                                    </a>
                                 </li>
                             </SplideSlide>
                         {/each}
@@ -323,13 +325,6 @@
         background: var(--red-secondary-color);
     }
 
-    .videosSection {
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-        padding: 1rem;
-    }
-
     .video {
         cursor: pointer;
         position: relative;
@@ -340,11 +335,19 @@
         background-position: center;
         background-repeat: no-repeat;
         border-radius: 0.8rem;
-        transition: transform 0.3s ease;
+        transition: scale 0.3s ease;
         display: flex;
         justify-content: flex-start;
         align-items: flex-end;
+    }
+
+    .video:hover {
+        scale: 101%;
+    }
+
+    .video a {
         color: white;
+        text-decoration: none;
     }
 
     .video h1 {
