@@ -36,7 +36,7 @@ export async function registerUser(user) {
 export async function newVideo(input) {
   const { userUID, driveURL, contentCover, contentTitle } = input
   
-  const fileIdMatch = driveURL.match(/\/file\/d\/([^/]+)\//)
+  const fileIdMatch = driveURL.match(/\/d\/([^/]+)/)
   if (!fileIdMatch) {
     return { success: false, error: 'Invalid Google Drive URL format' }
   }
