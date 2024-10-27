@@ -100,7 +100,6 @@
 
 <svelte:head>
     <title>FiloStream - Dashboard</title>
-    <meta name="description" content="Filo Stream." />
 </svelte:head>
 
 <div class="container">

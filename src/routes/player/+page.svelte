@@ -19,6 +19,10 @@
     })
 </script>
 
+<svelte:head>
+    <title>FiloStream - {videoTITLE}</title>
+</svelte:head>
+
 <div class="container">
     <Header />
 

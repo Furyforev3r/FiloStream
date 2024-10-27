@@ -26,7 +26,6 @@
 
 <svelte:head>
     <title>FiloStream - Profile</title>
-    <meta name="description" content="Filo Stream." />
 </svelte:head>
 
 <div class="container">
