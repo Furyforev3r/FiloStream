@@ -9,13 +9,7 @@
     let videoURL = $page.url.searchParams.get('URL')
     let videoTITLE = $page.url.searchParams.get('TITLE')
 
-    let apiKey
-
-    if (import.meta.env) {
-        apiKey = import.meta.env.VITE_GOOGLE_DRIVE_API_KEY
-    } else {
-        apiKey = process.env.VITE_GOOGLE_DRIVE_API_KEY
-    }
+    let publicApiKey = "AIzaSyAIFj2jLpaAsRLE9tyR-JCzEHNhDwp27ao"
 
 
     onMount(() => {
@@ -32,7 +26,7 @@
         <section>
             <h1>{videoTITLE}</h1>
             <div class="player">
-                <Player URL={`${videoURL}&key=${apiKey}`} TITLE={videoTITLE} />            
+                <Player URL={`${videoURL}&key=${publicApiKey}`} TITLE={videoTITLE} />            
             </div>
             <p>Thank you for using FiloStream! ❤️</p>
         </section>
