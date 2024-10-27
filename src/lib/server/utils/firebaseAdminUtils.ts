@@ -46,7 +46,8 @@ export async function newVideo(input) {
 
   try {
     const videoResponse = await axios.get(videoURL, {
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      timeout: 0 
     })
 
     if (videoResponse.status !== 200) {

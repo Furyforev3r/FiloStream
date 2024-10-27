@@ -66,6 +66,7 @@
 
         if (!result.success) {
             formError = result.error.errors.map(err => err.message).join(", ")
+            console.error(formError)
             return
         }
 
@@ -78,7 +79,8 @@
                 driveURL: url,
                 contentCover: cover
             }, {
-                headers: { "Content-Type": "application/json" }
+                headers: { "Content-Type": "application/json" },
+                timeout: 0 
             })
 
             if (response.status === 201) {
@@ -88,6 +90,7 @@
                 })
             } else {
                 formError = response.data.error || "Failed to add video"
+                console.error(formError)
             }
 
             loading = false
