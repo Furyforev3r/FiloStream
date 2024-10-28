@@ -1,7 +1,8 @@
 import { json } from "@sveltejs/kit"
 import { newVideo } from "$lib/server/utils/firebaseAdminUtils"
+import type { RegisterVideo } from "$lib/types/types"
 
-function validateVideoInput(input) {
+function validateVideoInput(input: RegisterVideo) {
   const { userUID, driveURL, contentCover, contentTitle } = input
   if (!userUID || !driveURL || !contentCover || !contentTitle) {
     throw new Error("Missing required fields for video")

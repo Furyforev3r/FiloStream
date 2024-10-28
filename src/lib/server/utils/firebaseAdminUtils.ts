@@ -1,7 +1,8 @@
-import { db, fieldValue, driveApiKey } from "$lib/server/services/firebaseAdmin"
-import axios from "axios"
+import { db, fieldValue } from "$lib/server/services/firebaseAdmin"
+import type { RegisterUser, RegisterVideo } from "$lib/types/types"
+import type { DocumentData } from "firebase-admin/firestore"
 
-export async function getUserByUID(uid) {
+export async function getUserByUID(uid: string) {
   try {
     const userDoc = await db.collection('Users').doc(uid).get()
 
@@ -16,7 +17,7 @@ export async function getUserByUID(uid) {
   }
 }
 
-export async function registerUser(user) {
+export async function registerUser(user: RegisterUser) {
   try {
     const getUser = await getUserByUID(user.uid)
 
@@ -33,7 +34,7 @@ export async function registerUser(user) {
   }
 }
 
-export async function newVideo(input) {
+export async function newVideo(input: RegisterVideo) {
   const { userUID, driveURL, contentCover, contentTitle } = input
   
   const fileIdMatch = driveURL.match(/\/d\/([^/]+)/)
@@ -51,7 +52,7 @@ export async function newVideo(input) {
       contentTitle
     }
 
-    const userVideosDoc = await db.collection('DefaultVideos').doc(userUID).get()
+    const userVideosDoc: DocumentData = await db.collection('DefaultVideos').doc(userUID).get()
     const userVideos = userVideosDoc.exists ? userVideosDoc.data().videos || [] : []
 
     userVideos.push(videoData)
@@ -65,9 +66,9 @@ export async function newVideo(input) {
   }
 }
 
-export async function getUserVideos(uid) {
+export async function getUserVideos(uid: string) {
   try {
-    const userVideosDoc = await db.collection('DefaultVideos').doc(uid).get()
+    const userVideosDoc: DocumentData = await db.collection('DefaultVideos').doc(uid).get()
 
     if (userVideosDoc.exists) {
       const videos = userVideosDoc.data().videos || []

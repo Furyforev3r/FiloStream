@@ -1,7 +1,8 @@
 import { json } from "@sveltejs/kit"
 import { registerUser } from "$lib/server/utils/firebaseAdminUtils"
+import type { RegisterUser } from "$lib/types/types"
 
-function validateUserInput(user) {
+function validateUserInput(user: RegisterUser) {
   const { uid, displayName, email } = user
   if (!uid || !displayName || !email) {
     throw new Error("Missing required fields")

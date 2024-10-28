@@ -10,7 +10,7 @@
   export let TITLE
 </script>
 
-<media-player title={TITLE} src={URL}>
+<media-player title={TITLE} src={{ src: URL, type: "video/mp4" }} >
   <media-provider></media-provider>
   <media-video-layout></media-video-layout>
 </media-player>

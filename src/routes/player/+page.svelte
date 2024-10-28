@@ -4,19 +4,19 @@
     import { onMount } from "svelte"
     import { page } from "$app/stores"
     import { goto } from "$app/navigation"
-    import Player from "$lib/components/Player.svelte"
+    import Icon from "@iconify/svelte"
 
     let videoID = $page.url.searchParams.get('ID')
     let videoTITLE = $page.url.searchParams.get('TITLE')
-
     let publicApiKey = "AIzaSyAIFj2jLpaAsRLE9tyR-JCzEHNhDwp27ao"
 
-
     onMount(() => {
-        if (videoURL == null) {
+        if (videoID == null || videoTITLE == null) {
             goto("/dashboard")
         }
     })
+
+    let PlayerPromise = import("$lib/components/Player.svelte")
 </script>
 
 <svelte:head>
@@ -30,7 +30,11 @@
         <section>
             <h1>{videoTITLE}</h1>
             <div class="player">
-                <Player URL={`https://www.googleapis.com/drive/v3/files/${videoID}?alt=media&key=${publicApiKey}`} TITLE={videoTITLE} />            
+                {#await PlayerPromise}
+                    <Icon icon="svg-spinners:3-dots-move" width="6rem" height="6rem" style="color: white" />
+                {:then { default: Player }}
+                    <svelte:component this={Player} URL={`https://www.googleapis.com/drive/v3/files/${videoID}?alt=media&key=${publicApiKey}`} TITLE={videoTITLE} />
+                {/await}
             </div>
             <p>Thank you for using FiloStream! ❤️</p>
         </section>
@@ -46,7 +50,7 @@
         flex-direction: column;
         justify-content: space-between;
     }
-    
+
     main {
         margin-block: 3rem;
     }
