@@ -75,7 +75,6 @@
     main {
         display: grid;
         place-items: center;
-        margin: 3rem;
     }
 
     section {
@@ -115,5 +114,15 @@
         display: flex;
         flex-direction: column;
         gap: 0.3rem;
+    }
+
+    @media (max-width: 800px) {
+        section {
+            flex-direction: column;
+        }
+
+        .content {
+            flex-direction: column;
+        }
     }
 </style>
