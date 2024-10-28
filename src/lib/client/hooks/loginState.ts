@@ -1,7 +1,7 @@
 import { auth } from "$lib/client/services/firebase"
-import { writable } from 'svelte/store'
+import { writable, type Writable } from 'svelte/store'
 
-export const user = writable("Loading...")
+export const user: Writable<any> = writable("Loading...")
 
 const unsubscribe = auth.onAuthStateChanged((authUser) => {
   if (authUser) {

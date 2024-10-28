@@ -7,9 +7,10 @@
     import axios from "axios"
     import { logout } from "$lib/client/utils/firebaseUtils"
     import { goto } from "$app/navigation"
+    import type { FiloUserRedirect } from "$lib/types/types"
 
-    let userInfo
-    let userAccount
+    let userInfo: any
+    let userAccount: FiloUserRedirect
 
     $: userInfo = $user
 

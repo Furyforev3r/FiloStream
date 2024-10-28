@@ -5,8 +5,9 @@
     import FiloStream from "$lib/assets/FiloStream.png"
     import { goto } from "$app/navigation"
     import { user } from "$lib/client/hooks/loginState"
+    import type { User } from "firebase/auth"
     
-    let userInfo
+    let userInfo: User
 
     $: userInfo = $user
 

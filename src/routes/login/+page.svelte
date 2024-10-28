@@ -9,7 +9,7 @@
     import { afterUpdate } from "svelte"
     import axios from "axios"
 
-    let userInfo
+    let userInfo: any
 
     $: userInfo = $user
 
@@ -26,12 +26,12 @@
         if (success) {
             try {
                 const response = await axios.post('/api/login', {
-                    'uid': user.uid,
-                    'photoURL': user.photoURL,
-                    'displayName': user.displayName.substring(0, 15),
-                    'username': `${user.displayName.replace(/[^\w\s]/gi, '').replace(/\s+/g, '.').substring(0, 10).toLowerCase()}.${user.uid.substring(0, 5).toLowerCase()}`,
-                    'email': user.email,
-                    'emailVerified': user.emailVerified
+                    'uid': user?.uid,
+                    'photoURL': user?.photoURL,
+                    'displayName': user?.displayName?.substring(0, 15),
+                    'username': `${user?.displayName?.replace(/[^\w\s]/gi, '').replace(/\s+/g, '.').substring(0, 10).toLowerCase()}.${user?.uid.substring(0, 5).toLowerCase()}`,
+                    'email': user?.email,
+                    'emailVerified': user?.emailVerified
                 })
 
                 if (response.status === 201 || response.status == 409) {

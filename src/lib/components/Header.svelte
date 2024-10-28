@@ -5,9 +5,10 @@
     import { user } from "$lib/client/hooks/loginState"
     import { afterUpdate } from "svelte"
     import axios from "axios"
+    import type { FiloUserRedirect } from "$lib/types/types"
 
     let userInfo
-    let userAccount
+    let userAccount: FiloUserRedirect
 
     $: userInfo = $user
 

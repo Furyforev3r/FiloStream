@@ -11,9 +11,10 @@
     import toast, { Toaster } from "svelte-french-toast"
     import { Splide, SplideSlide } from "@splidejs/svelte-splide"
     import "@splidejs/svelte-splide/css"
+    import type { Video } from "$lib/types/types"
 
-    let userInfo
-    let userVideos = []
+    let userInfo: any
+    let userVideos: Video[] = []
     let loadingVideos = true
 
     $: userInfo = $user
@@ -58,7 +59,7 @@
         toastMenu = !toastMenu
     }
 
-    async function handleSubmit(event) {
+    async function handleSubmit(event: any) {
         event.preventDefault()
         formError = ""
 
@@ -94,7 +95,7 @@
             }
 
             loading = false
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error adding video:", error)
             formError = error.response?.data?.error || "Network error, please try again later"
         }
