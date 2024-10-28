@@ -170,7 +170,7 @@
                         {#each userVideos as video}
                             <SplideSlide>
                                 <li class="video" style={`background-image: url(${video.contentCover});`}>
-                                    <a href={`/player?URL=${video.videoURL}&TITLE=${video.contentTitle}`}>
+                                    <a href={`/player?ID=${video.fileId}&TITLE=${video.contentTitle}`}>
                                         <div class="overlay"></div>
                                         <h1>{video.contentTitle}</h1>     
                                     </a>

@@ -6,7 +6,7 @@
     import { goto } from "$app/navigation"
     import Player from "$lib/components/Player.svelte"
 
-    let videoURL = $page.url.searchParams.get('URL')
+    let videoID = $page.url.searchParams.get('ID')
     let videoTITLE = $page.url.searchParams.get('TITLE')
 
     let publicApiKey = "AIzaSyAIFj2jLpaAsRLE9tyR-JCzEHNhDwp27ao"
@@ -30,7 +30,7 @@
         <section>
             <h1>{videoTITLE}</h1>
             <div class="player">
-                <Player URL={`${videoURL}&key=${publicApiKey}`} TITLE={videoTITLE} />            
+                <Player URL={`https://www.googleapis.com/drive/v3/files/${videoID}?alt=media&key=${publicApiKey}`} TITLE={videoTITLE} />            
             </div>
             <p>Thank you for using FiloStream! ❤️</p>
         </section>

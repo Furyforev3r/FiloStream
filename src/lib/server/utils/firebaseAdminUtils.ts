@@ -42,20 +42,10 @@ export async function newVideo(input) {
   }
 
   const fileId = fileIdMatch[1]
-  const videoURL = `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media&key=${driveApiKey}`
 
   try {
-    const videoResponse = await axios.get(videoURL, {
-      headers: { 'Content-Type': 'application/json' },
-      timeout: 0 
-    })
-
-    if (videoResponse.status !== 200) {
-      return { success: false, error: 'Failed to fetch video from Google Drive' }
-    }
-
     const videoData = {
-      videoURL,
+      fileId,
       driveURL,
       contentCover,
       contentTitle
