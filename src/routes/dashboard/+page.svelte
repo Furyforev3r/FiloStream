@@ -7,15 +7,31 @@
     import Footer from "$lib/components/Footer.svelte"
     import { goto } from "$app/navigation"
     import { user } from "$lib/client/hooks/loginState"
-    import { afterUpdate } from "svelte"
+    import { afterUpdate, onMount, onDestroy } from "svelte"
     import toast, { Toaster } from "svelte-french-toast"
     import { Splide, SplideSlide } from "@splidejs/svelte-splide"
     import "@splidejs/svelte-splide/css"
     import type { Video } from "$lib/types/types"
+    import ImportMenuDrive from "$lib/components/importMenuDrive.svelte"
 
     let userInfo: any
     let userVideos: Video[] = []
     let loadingVideos = true
+    let toggleMenuValue = false
+
+    function toggleMenu() {
+        toggleMenuValue = !toggleMenuValue
+    }
+
+    function handleKeydown(event) {
+        if (event.key === 'n') {
+            toggleMenu()
+        }
+
+        if (event.key === 'Escape' && toggleMenuValue) {
+            toggleMenu()
+        }
+    }
 
     $: userInfo = $user
 
@@ -25,6 +41,11 @@
         } else if (userInfo && userInfo != "Loading..." && userVideos.length <= 0) {
             await fetchUserVideos(userInfo.uid)
         }
+    })
+
+    onMount(() => {
+        window.addEventListener('keydown', handleKeydown)
+            onDestroy(() => window.removeEventListener('keydown', handleKeydown))
     })
 
     async function fetchUserVideos(uid: string) {
@@ -42,63 +63,8 @@
         }
     }
 
-    let toastMenu = false
-    let loading = false
-    let title = ""
-    let url = ""
-    let cover = ""
-    let formError = ""
-
-    const videoSchema = z.object({
-        title: z.string().min(1, { message: "Title is required" }),
-        url: z.string().url({ message: "Invalid URL format" }),
-        cover: z.string().url({ message: "Invalid cover URL format" })
-    })
-
-    function toggleToast() {
-        toastMenu = !toastMenu
-    }
-
-    async function handleSubmit(event: any) {
-        event.preventDefault()
-        formError = ""
-
-        const result = videoSchema.safeParse({ title, url, cover })
-
-        if (!result.success) {
-            formError = result.error.errors.map(err => err.message).join(", ")
-            console.error(formError)
-            return
-        }
-
-        try {
-            loading = true
-
-            const response = await axios.post("/api/newVideo", {
-                userUID: userInfo.uid,
-                contentTitle: title,
-                driveURL: url,
-                contentCover: cover
-            }, {
-                headers: { "Content-Type": "application/json" },
-                timeout: 0 
-            })
-
-            if (response.status === 201) {
-                toggleToast()
-                toast.success("Video added successfully!", {
-                    style: 'background: #222; color: #fff;'
-                })
-            } else {
-                formError = response.data.error || "Failed to add video"
-                console.error(formError)
-            }
-
-            loading = false
-        } catch (error: any) {
-            console.error("Error adding video:", error)
-            formError = error.response?.data?.error || "Network error, please try again later"
-        }
+    function handleSuccess(message: string) {
+        toast.success(message, { style: 'background: #222; color: #fff;' });
     }
 </script>
 
@@ -110,33 +76,12 @@
     <Toaster />
     <Header />
 
-    {#if toastMenu}
-        <div class="importToastContainter">
-            <div class="importToast">
-                <div class="importTitle">
-                    <h2>Import from Google Drive</h2>
-                    <button on:click={toggleToast} class="importButton">
-                        <Icon icon="material-symbols:close" width="2em" height="2em" style="color: #F46464" />
-                    </button>
-                </div>
-                <form class="importContent" on:submit={handleSubmit}>
-                    <p>Content title</p>
-                    <input type="text" bind:value={title} placeholder="Titanic - Full Movie" required>
-                    <p>Content URL</p>
-                    <input type="url" bind:value={url} placeholder="https://drive.google.com/file/d/example-url/view?usp=drive_link" required>
-                    <p>Content cover</p>
-                    <input type="url" bind:value={cover} placeholder="https://drive.google.com/file/d/poster-example-url/view?usp=drive_link" required>
-                    {#if formError}
-                        <p class="error">{formError}</p>
-                    {/if}
-                    {#if !loading}
-                        <input type="submit" value="Import">
-                    {:else}
-                        <button class="loadingButton"><Icon icon="line-md:loading-twotone-loop" width="1.2em" height="1.2em"  style="color: white" /></button>
-                    {/if}
-                </form>
-            </div>
-        </div>
+    {#if toggleMenuValue}
+        <ImportMenuDrive 
+            {toggleMenu} 
+            {userInfo} 
+            on:success={(event) => handleSuccess(event.detail)} 
+        />
     {/if}
 
     <main>
@@ -147,7 +92,7 @@
                     <p>Need help? <a href="/">See a FiloStream tutorial here!</a></p>
                 </div>
                 <div>
-                    <button class="driveButton" on:click={toggleToast}><img src={DriveIcon} width="25px" alt="Google Drive"> Import from Drive</button>
+                    <button class="driveButton" on:click={toggleMenu}><img src={DriveIcon} width="25px" alt="Google Drive"> Import from Drive</button>
                 </div>
             </div>
             <div class="videoSection">
@@ -195,95 +140,6 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-    }
-
-    .importToastContainter {
-        position: absolute;
-        overflow: auto;
-        width: 100%;
-        height: 100%;
-        display: grid;
-        place-items: center;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-        animation: fade 0.3s;
-    }
-
-    .error {
-        color: var(--red-primary-color);
-        font-size: 0.9rem;
-    }
-
-    @keyframes fade {
-        0% {
-            opacity: 0%;
-        }
-        100% {
-            opacity: 100%;
-        }
-    }
-
-    .importToast {
-        width: 40%;
-        display: flex;
-        flex-direction: column;
-        padding: 1rem;
-        border-radius: 0.8rem;
-        background: var(--button-background);
-    }
-
-    .importTitle {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .importButton {
-        cursor: pointer;
-        background: none;
-        border: none;
-        outline: none;
-    }
-
-    .importContent {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-    }
-
-    input[type="text"], input[type="url"] {
-        background: var(--button-hover);
-        color: var(--text-alternative);
-        border: none;
-        padding: 0.8rem;
-        border-radius: 0.8rem;
-    }
-
-    input[type="text"]:focus, input[type="url"]:focus {
-        border: none;
-        outline: none;
-    }
-
-    input[type="submit"], .loadingButton {
-        cursor: pointer;
-        color: var(--text-alternative);
-        padding: 1.2rem;
-        margin-block: 0.8rem;
-        background: var(--red-primary-color);
-        border: none;
-        border-radius: 0.8rem;
-        transition: 0.3s background;
-    }
-
-    input[type="submit"]:hover {
-        background: var(--red-secondary-color);
-    }
-
-    .loadingButton {
-        padding: 1.2rem;
-        background: var(--button-hover);
     }
 
     main {
@@ -373,11 +229,5 @@
 
     .video:hover .overlay {
         background-color: rgba(0, 0, 0, 0.3);
-    }
-
-    @media (max-width: 800px) {
-        .importToast {
-            width: 80%;
-        }
     }
 </style>
