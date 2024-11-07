@@ -12,7 +12,7 @@
     import { Splide, SplideSlide } from "@splidejs/svelte-splide"
     import "@splidejs/svelte-splide/css"
     import type { Video } from "$lib/types/types"
-    import ImportMenuDrive from "$lib/components/importMenuDrive.svelte"
+    import ImportMenuDrive from "$lib/components/ImportMenuDrive.svelte"
 
     let userInfo: any
     let userVideos: Video[] = []
