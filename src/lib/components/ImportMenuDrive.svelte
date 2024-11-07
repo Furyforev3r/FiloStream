@@ -182,7 +182,7 @@
     }
     
     @media (max-width: 800px) {
-        .importToast {
+        .importMenu {
             width: 80%;
         }
     }

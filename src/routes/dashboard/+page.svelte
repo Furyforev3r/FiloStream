@@ -23,7 +23,7 @@
         toggleMenuValue = !toggleMenuValue
     }
 
-    function handleKeydown(event) {
+    function handleKeydown(event: KeyboardEvent) {
         if (event.key === 'n') {
             toggleMenu()
         }
