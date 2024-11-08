@@ -42,10 +42,13 @@
             await fetchUserVideos(userInfo.uid)
         }
     })
-
+    
     onMount(() => {
         window.addEventListener('keydown', handleKeydown)
-            onDestroy(() => window.removeEventListener('keydown', handleKeydown))
+    })
+
+    onDestroy(() => {
+        window.removeEventListener('keydown', handleKeydown)
     })
 
     async function fetchUserVideos(uid: string) {
