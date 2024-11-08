@@ -42,13 +42,17 @@
             await fetchUserVideos(userInfo.uid)
         }
     })
-    
+
     onMount(() => {
-        window.addEventListener('keydown', handleKeydown)
+        if (typeof window !== 'undefined') {
+            window.addEventListener('keydown', handleKeydown);
+        }
     })
 
     onDestroy(() => {
-        window.removeEventListener('keydown', handleKeydown)
+        if (typeof window !== 'undefined') {
+            window.removeEventListener('keydown', handleKeydown);
+        }
     })
 
     async function fetchUserVideos(uid: string) {
@@ -101,12 +105,13 @@
             <div class="videoSection">
                 <h2>Your Videos</h2>
                 {#if loadingVideos}
-                    <Icon icon="line-md:loading-twotone-loop" width="8rem" height="8rem" style="color: white" />
+                    <div class="loading">
+                        <Icon icon="line-md:loading-twotone-loop" width="8rem" height="8rem" style="color: white" />                        
+                    </div>
                 {:else if userVideos.length > 0}
                     <Splide aria-label="Your Videos" options={{
                         rewind: true,
                         perPage: 3,
-                        focus: 'center',
                         breakpoints: {
                             800: {
                                 perPage: 1, 
@@ -118,12 +123,12 @@
                     }}>
                         {#each userVideos as video}
                             <SplideSlide>
-                                <li class="video" style={`background-image: url(${video.contentCover});`}>
+                                <div class="video" style={`background-image: url(${video.contentCover});`}>
                                     <a href={`/player?ID=${video.fileId}&TITLE=${video.contentTitle}`}>
                                         <div class="overlay"></div>
                                         <h1>{video.contentTitle}</h1>     
                                     </a>
-                                </li>
+                                </div>
                             </SplideSlide>
                         {/each}
                     </Splide>
@@ -187,7 +192,19 @@
         background: var(--red-secondary-color);
     }
 
+    .videoSection {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    .loading {
+        display: grid;
+        place-items: center;
+    }
+
     .video {
+        justify-self: center;
         cursor: pointer;
         position: relative;
         height: 500px;
@@ -232,5 +249,12 @@
 
     .video:hover .overlay {
         background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 800px) {
+        .title {
+            flex-direction: column;
+            gap: 1rem;
+        }
     }
 </style>
