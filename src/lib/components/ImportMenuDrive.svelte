@@ -180,7 +180,7 @@
         padding: 1.2rem;
         background: var(--button-hover);
     }
-    
+
     @media (max-width: 800px) {
         .importMenu {
             width: 80%;
