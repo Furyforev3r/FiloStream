@@ -1,21 +1,17 @@
 import type { FieldValue } from "firebase-admin/firestore"
 
-export interface RegisterUser {
+export interface UserBase {
     uid: string,
     photoURL: string,
     displayName: string,
     username: string,
     email: string,
-    emailVerified: Boolean
+    emailVerified: boolean
 }
 
-export interface FiloUser {
-    uid: string,
-    photoURL: string,
-    displayName: string,
-    username: string,
-    email: string,
-    emailVerified: Boolean,
+export interface RegisterUser extends UserBase {}
+
+export interface FiloUser extends UserBase {
     createdAt: FieldValue
 }
 
@@ -30,10 +26,24 @@ export interface RegisterVideo {
     contentTitle: string
 }
 
-export interface Video {
-    userUID: string,
+export interface Video extends RegisterVideo {
+    fileId: string
+}
+
+export interface SeriesFile {
     fileId: string,
-    driveURL: string,
+    name: string
+}
+
+export interface Series {
+    contentUID: string,
+    contentTitle: string,
     contentCover: string,
-    contentTitle: string
+    driveURL: string,
+    content: SeriesFile[],
+    editorUID: string
+}
+
+export interface RegisterSeries extends Series {
+    userUID: string
 }
