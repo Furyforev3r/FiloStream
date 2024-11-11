@@ -199,4 +199,3 @@ export async function getUserSeries(uid: string) {
     return { success: false, error: 'Failed to fetch series' }
   }
 }
-

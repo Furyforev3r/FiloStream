@@ -12,7 +12,7 @@ export async function GET({ url }) {
     const seriesInfo: any = await getSeries(seriesUID)
 
     if (seriesInfo.success) {
-      return json({ videos: seriesInfo }, { status: 200 })
+      return json({ series: seriesInfo }, { status: 200 })
     } else {
       return json({ error: 'No Series found' }, { status: 404 })
     }
