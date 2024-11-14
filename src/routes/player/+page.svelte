@@ -5,10 +5,10 @@
     import { page } from "$app/stores"
     import { goto } from "$app/navigation"
     import Icon from "@iconify/svelte"
+    import { PUBLIC_API_KEY } from '$env/static/public'
 
     let videoID = $page.url.searchParams.get('ID')
     let videoTITLE = $page.url.searchParams.get('TITLE')
-    let publicApiKey = "AIzaSyAIFj2jLpaAsRLE9tyR-JCzEHNhDwp27ao"
 
     onMount(() => {
         if (videoID == null || videoTITLE == null) {
@@ -33,7 +33,7 @@
                 {#await PlayerPromise}
                     <Icon icon="svg-spinners:3-dots-move" width="6rem" height="6rem" style="color: white" />
                 {:then { default: Player }}
-                    <svelte:component this={Player} URL={`https://www.googleapis.com/drive/v3/files/${videoID}?alt=media&key=${publicApiKey}`} TITLE={videoTITLE} />
+                    <svelte:component this={Player} URL={`https://www.googleapis.com/drive/v3/files/${videoID}?alt=media&key=${PUBLIC_API_KEY}`} TITLE={videoTITLE} />
                 {/await}
             </div>
             <p>Thank you for using FiloStream! ❤️</p>
