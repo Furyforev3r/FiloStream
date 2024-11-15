@@ -11,16 +11,22 @@
     import toast, { Toaster } from "svelte-french-toast"
     import { Splide, SplideSlide } from "@splidejs/svelte-splide"
     import "@splidejs/svelte-splide/css"
-    import type { Video } from "$lib/types/types"
+    import type { Video, Series } from "$lib/types/types"
+    import ImportMenuChoice from "$lib/components/ImportMenuChoice.svelte"
     import ImportMenuDrive from "$lib/components/ImportMenuDrive.svelte"
+    import ImportSeriesMenuDrive from "$lib/components/ImportSeriesMenuDrive.svelte"
 
     let userInfo: any
     let userVideos: Video[] = []
+    let userSeries: Series[] = []
     let loadingVideos = true
+    let loadingSeries = true
     let toggleMenuValue = false
+    let menuType: 'video' | 'series' | null = null
 
     function toggleMenu() {
         toggleMenuValue = !toggleMenuValue
+        menuType = null
     }
 
     function handleKeydown(event: KeyboardEvent) {
@@ -33,13 +39,18 @@
         }
     }
 
+    function handleMenuSelection(type: 'video' | 'series') {
+        menuType = type
+    }
+
     $: userInfo = $user
 
     afterUpdate(async () => {
         if (!userInfo && userInfo != "Loading...") {
             goto("/login")
-        } else if (userInfo && userInfo != "Loading..." && userVideos.length <= 0) {
+        } else if (userInfo && userInfo != "Loading..." && userVideos.length <= 0 && userSeries.length <= 0) {
             await fetchUserVideos(userInfo.uid)
+            await fetchUserSeries(userInfo.uid)
         }
     })
 
@@ -58,6 +69,7 @@
     async function fetchUserVideos(uid: string) {
         try {
             const response = await axios.get(`/api/getUserVideos?uid=${uid}`)
+            
             if (response.status === 200) {
                 userVideos = response.data.videos || []
             } else {
@@ -67,6 +79,22 @@
             console.error("Error fetching user videos:", error)
         } finally {
             loadingVideos = false
+        }
+    }
+
+    async function fetchUserSeries(uid: string) {
+        try {
+            const responseSeries = await axios.get(`/api/getUserSeries?uid=${uid}`)
+
+            if (responseSeries.status === 200) {
+                userSeries = responseSeries.data.series || []
+            } else {
+                userSeries = []
+            }
+        } catch (error) {
+            console.error("Error fetching user series:", error)
+        } finally {
+            loadingSeries = false
         }
     }
 
@@ -83,8 +111,24 @@
     <Toaster />
     <Header />
 
-    {#if toggleMenuValue}
+
+    {#if toggleMenuValue && !menuType}
+        <ImportMenuChoice 
+            {toggleMenu} 
+            onSelect={handleMenuSelection} 
+        />
+    {/if}
+
+    {#if toggleMenuValue && menuType === 'video'}
         <ImportMenuDrive 
+            {toggleMenu} 
+            {userInfo} 
+            on:success={(event) => handleSuccess(event.detail)} 
+        />
+    {/if}
+
+    {#if toggleMenuValue && menuType === 'series'}
+        <ImportSeriesMenuDrive 
             {toggleMenu} 
             {userInfo} 
             on:success={(event) => handleSuccess(event.detail)} 
@@ -136,6 +180,41 @@
                     <p>No videos found. Add some videos to get started!</p>
                 {/if}
             </div>
+
+            <div class="videoSection">
+                <h2>Your Series</h2>
+                {#if loadingSeries}
+                    <div class="loading">
+                        <Icon icon="line-md:loading-twotone-loop" width="8rem" height="8rem" style="color: white" />                        
+                    </div>
+                {:else if userSeries.length > 0}
+                    <Splide aria-label="Your Videos" options={{
+                        rewind: true,
+                        perPage: 3,
+                        breakpoints: {
+                            800: {
+                                perPage: 1, 
+                            },
+                            1200: {
+                                perPage: 2,
+                            },
+                        },
+                    }}>
+                        {#each userSeries as series}
+                            <SplideSlide>
+                                <div class="video" style={`background-image: url(${series.contentCover});`}>
+                                    <a href={`/series/${series.contentUID}`}>
+                                        <div class="overlay"></div>
+                                        <h1>{series.contentTitle}</h1>     
+                                    </a>
+                                </div>
+                            </SplideSlide>
+                        {/each}
+                    </Splide>
+                {:else}
+                    <p>No videos found. Add some videos to get started!</p>
+                {/if}
+            </div>
         </section>
     </main>
 
@@ -158,7 +237,7 @@
     section {
         display: flex;
         flex-direction: column;
-        gap: 0.3rem;
+        gap: 1rem;
         margin: 3rem;
     }
 
