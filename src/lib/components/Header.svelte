@@ -38,7 +38,7 @@
     {#if !userInfo}
         <button on:click={() => goto('/login')}><Icon icon="material-symbols:login" width="1.2em" height="1.2em"  style="color: white" /> Login</button>
     {:else if userAccount}
-        <a href="profile"><img class="userPhoto" src={userAccount.user.photoURL} alt={userAccount.user.displayName} width="84px"></a>
+        <a href="/profile"><img class="userPhoto" src={userAccount.user.photoURL} alt={userAccount.user.displayName} width="84px"></a>
     {:else if userInfo == "Loading..."}
         <div class="loading"></div>
     {:else}
