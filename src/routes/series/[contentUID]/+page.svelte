@@ -57,7 +57,7 @@
 </script>
 
 <svelte:head>
-    <title>FiloStream - Series</title>
+    <title>{series ? `FiloStream - ${series.contentTitle}` : "FiloStream - Series"}</title>
 </svelte:head>
 
 <div class="container">
@@ -91,7 +91,11 @@
             <div class="episodes">
                 {#each content as episode}
                     {#if episode.name.endsWith(".mp4")}
-                        <a class="episode" href={`/player?ID=${episode.id}&TITLE=${episode.name.replace(/\.mp4$/, "")}`}>
+                        <a 
+                            class="episode" 
+                            href={`/player?ID=${episode.id}&TITLE=${episode.name.replace(/\.mp4$/, "")}`}
+                            target="_blank"
+                        >
                             <div class="playIcon">
                                 <Icon icon="mdi:play-outline" width="2em" height="2em"  style="color: white" />
                             </div>
