@@ -1,6 +1,6 @@
 <footer>
     <h2>FiloStream</h2>
-    <p>© 2024 FuryForever. All rights reserved.</p>
+    <p>© 2025 FuryForever. All rights reserved.</p>
 </footer>
 
 <style>
