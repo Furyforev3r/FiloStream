@@ -140,7 +140,7 @@
             <div class="title">
                 <div>
                     <h1>Welcome to dashboard!</h1>
-                    <p>Need help? <a href="/">See a FiloStream tutorial here!</a></p>
+                    <p>Need help? <a href="/help">See a FiloStream tutorial here!</a></p>
                 </div>
                 <div>
                     <button class="driveButton" on:click={toggleMenu}><img src={DriveIcon} width="25px" alt="Google Drive"> Import from Drive</button>

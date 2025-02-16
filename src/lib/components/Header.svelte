@@ -31,7 +31,7 @@
                 <a href="/dashboard">Dashboard</a>
             </li>
             <li>
-                <a href="/">Help</a>
+                <a href="/help">Help</a>
             </li>
         </ul>
     </nav>
