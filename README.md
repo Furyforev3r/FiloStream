@@ -4,3 +4,19 @@
 </div>
 
 **Stream all your favorite content quickly, easily and organized.**
+
+## 📥 Setup
+**Clone the repository:**
+```bash
+git clone https://github.com/Furyforev3r/FiloStream.git
+```
+**Install dependencies:**
+```bash
+npm install
+```
+## 🖥️ How to Run
+**Run the command:**
+```bash
+npm run dev
+```
+**- Acess the application in the browser: `http://localhost:PORT`**
