@@ -30,10 +30,6 @@
     }
 
     function handleKeydown(event: KeyboardEvent) {
-        if (event.key === 'n') {
-            toggleMenu()
-        }
-
         if (event.key === 'Escape' && toggleMenuValue) {
             toggleMenu()
         }

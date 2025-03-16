@@ -31,8 +31,7 @@
             <div>
                 <h2>3. Keyboard Shortcuts</h2>
                 <ul>
-                    <li><strong>N</strong> - Open the import menu</li>
-                    <li><strong>Esc</strong> - Close the import menu</li>
+                   <li><strong>Esc</strong> - Close the import menu</li>
                 </ul>
             </div>
             
